@@ -9,41 +9,41 @@ argo-cd:
         - type: helm
           name: argo-cd
           url: https://argoproj.github.io/argo-helm
-  # extraObjects:
-  #   - apiVersion: argoproj.io/v1alpha1
-  #     kind: ApplicationSet
-  #     metadata:
-  #       name: cluster-addons
-  #     spec:
-  #       generators:
-  #       - git:
-  #           repoURL: https://github.com/cs-nerds/five-empty-charts.git
-  #           revision: HEAD
-  #           directories:
-  #           - path: charts/*
-  #             exclude: false
-  #           - path: charts/chart-two
-  #             exclude: true
-  #       template:
-  #         metadata:
-  #           name: '{{ "{{" }} path.basename {{ "}}" }}'
-  #         spec:
-  #           project: default
-  #           source:
-  #             repoURL: https://github.com/cs-nerds/five-empty-charts.git
-  #             targetRevision: HEAD
-  #             path: '{{ "{{" }} path {{ "}}" }}'
-  #             helm:
-  #               valueFiles:
-  #                 - "broken.values.yaml"
-  #                 - "values.yaml"
-  #               ignoreMissingValueFiles: true
-  #           destination:
-  #             server: https://kubernetes.default.svc
-  #             namespace: '{{ "{{" }} path.basename {{ "}}" }}'
-  #           syncPolicy:
-  #             automated:
-  #               prune: true
-  #               selfHeal: true
-  #             syncOptions:
-  #             - CreateNamespace=true
+  extraObjects:
+    - apiVersion: argoproj.io/v1alpha1
+      kind: ApplicationSet
+      metadata:
+        name: cluster-addons
+      spec:
+        generators:
+        - git:
+            repoURL: https://github.com/cs-nerds/five-empty-charts.git
+            revision: HEAD
+            directories:
+            - path: charts/*
+              exclude: false
+            - path: charts/chart-two
+              exclude: true
+        template:
+          metadata:
+            name: '{{ `{{path.basename}}` }}'
+          spec:
+            project: default
+            source:
+              repoURL: https://github.com/cs-nerds/five-empty-charts.git
+              targetRevision: HEAD
+              path: '{{ `{{path}}` }}'
+              helm:
+                valueFiles:
+                  - "broken.values.yaml"
+                  - "values.yaml"
+                ignoreMissingValueFiles: true
+            destination:
+              server: https://kubernetes.default.svc
+              namespace: '{{ `{{path.basename}}` }}'
+            syncPolicy:
+              automated:
+                prune: true
+                selfHeal: true
+              syncOptions:
+              - CreateNamespace=true
