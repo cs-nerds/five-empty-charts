@@ -24,7 +24,7 @@ argo-cd:
             directories:
             - path: charts/*
               exclude: false
-            - path: charts/chart-two
+            - path: charts/chart-five
               exclude: true
         template:
           metadata:
