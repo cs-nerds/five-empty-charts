@@ -18,13 +18,18 @@ argo-cd:
         - /*
       pathType: ImplementationSpecific
       https: false
+    service:
+      annotations:
+        beta.cloud.google.com/backend-config: '{"default": "argocd-server"}'
+        cloud.google.com/neg: '{"ingress": true}'
+      type: NodePort
     extraArgs:
       - --insecure
     config:
       repositories: |
         - type: helm
           name: argo-cd
-          url: https://argoproj.github.io/argo-helm
+          url: https://argoproj.github.io/argo-helm     
   extraObjects:
     - apiVersion: argoproj.io/v1alpha1
       kind: ApplicationSet
