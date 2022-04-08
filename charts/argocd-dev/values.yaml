@@ -23,16 +23,16 @@ argo-cd:
             - path: charts/*
               exclude: false
             - path: charts/chart-two
-              exclude: true   
+              exclude: true
         template:
           metadata:
-            name: '{{path.basename}}'
+            name: '{{ "{{" }} path.basename {{ "}}" }}'
           spec:
             project: default
             source:
               repoURL: https://github.com/cs-nerds/five-empty-charts.git
               targetRevision: HEAD
-              path: '{{path}}'
+              path: '{{ "{{" }} path {{ "}}" }}'
               helm:
                 valueFiles:
                   - "broken.values.yaml"
@@ -40,7 +40,7 @@ argo-cd:
                 ignoreMissingValueFiles: true
             destination:
               server: https://kubernetes.default.svc
-              namespace: '{{path.basename}}'
+              namespace: '{{ "{{" }} path.basename {{ "}}" }}'
             syncPolicy:
               automated:
                 prune: true
